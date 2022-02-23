@@ -1,0 +1,57 @@
+//merge sort
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head == null || (head != null && head.next == null)) return head;
+        
+        
+        ListNode l = head;
+        ListNode r = head;
+        
+        while(r != null && r.next !=null) {
+            r = r.next.next;
+            if(r == null || (r != null && r.next == null)) {
+                r = l.next;
+                l.next = null;
+                l = head;
+                break;
+            }
+            l = l.next;
+        }
+        
+        return merge(l, r);
+    }
+    
+    public ListNode merge(ListNode left, ListNode right) {
+        ListNode l = sortList(left);
+        ListNode r = sortList(right);
+        
+        ListNode sort = new ListNode(0);
+        ListNode preHead = sort;
+        while(l != null && r != null) {
+            if(l.val <= r.val) {
+                sort.next = l;
+                l = l.next;
+            }
+            else {
+                sort.next = r;
+                r = r.next;
+            }
+            sort = sort.next;
+        }
+        
+        sort.next = (l != null) ? l : r;
+        
+        return preHead.next;
+    }
+}
